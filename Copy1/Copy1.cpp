@@ -34,7 +34,7 @@ struct BytesArray
 	char* data = nullptr;
 };
 
-int k = 20;
+int k = 10000000;
 
 void AddBytes(BytesArray* array, char* bytes, int l)
 {
@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 	setlocale(LC_ALL, "Russian");
 	if (argc < 3)
 	{
-		cout « "Недостаточно аргументов!";
+		cout << "Недостаточно аргументов!";
 		exit(1);
 	}
 	char* cur;
@@ -92,12 +92,12 @@ int main(int argc, char* argv[])
 		int sizef = srcfs.tellg();
 		srcfs.seekg(0);
 		char* buffer = new char[k];
-		while (1)
+		while (!srcfs.eof())
 		{
 
-			if (0 < sizef - count && sizef - count < k)
+			if (0 <= sizef - count && sizef - count <= k)
 			{
-				srcfs.read(buffer, sizef - count);
+				srcfs.read(buffer, sizef - count+1);
 				AddBytes(arr, buffer, sizef - count);
 			}
 			else
@@ -105,8 +105,7 @@ int main(int argc, char* argv[])
 				srcfs.read(buffer, k);
 				AddBytes(arr, buffer, k);
 			}
-			if (srcfs.eof())
-				break;
+			
 			count += k;
 		}
 		dstfs.write(arr->data, arr->size);
@@ -119,7 +118,7 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		cout « "File isnt open";
+		cout <<  "File isnt open";
 	}
 	return 1;
 }
@@ -204,7 +203,7 @@ int main(int argc, char* argv[])
 // bool g = srcfs.bad();
 // cout
 
-« k « " " « g;*/
+//« k « " " « g;*/
 // if (srcfs.eof()) break;
 // if (0 < sizef - count && sizef - count < k)
 // {

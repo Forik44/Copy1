@@ -9,7 +9,7 @@ struct BytesArray
 	char* data = nullptr;
 };
 
-int k = 10000000;
+int k = 100000;
 
 void AddBytes(BytesArray* array, char* bytes, int l)
 {

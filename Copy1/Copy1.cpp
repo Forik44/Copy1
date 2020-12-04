@@ -40,6 +40,13 @@ void AddBytes(BytesArray* array, char* bytes, int l)
 		array->data = tmp;
 		array->size += l;
 	}
+	
+}
+void WriteBytes(char* data, int size, char* next)
+{
+	fstream dstfs;
+	dstfs.open(next, ios_base::app | ios_base::binary);
+	dstfs.write(data, size);
 }
 
 int main(int argc, char* argv[])
@@ -58,7 +65,8 @@ int main(int argc, char* argv[])
 	srcfs.open(cur, ios_base::in | ios_base::binary);
 	fstream dstfs;
 	dstfs.open(next, ios_base::out | ios_base::trunc | ios_base::binary);
-	if (srcfs.is_open() && dstfs.is_open())
+	dstfs.close();
+	if (srcfs.is_open())
 	{
 		BytesArray* arr = new BytesArray;
 		int size = 1;
@@ -66,10 +74,10 @@ int main(int argc, char* argv[])
 		srcfs.seekg(0, ios_base::end);
 		int sizef = srcfs.tellg();
 		srcfs.seekg(0);
-		char* buffer = new char[k];
+		
 		while (!srcfs.eof())
 		{
-
+			char* buffer = new char[k];
 			if (0 <= sizef - count && sizef - count <= k)
 			{
 				srcfs.read(buffer, sizef - count+1);
@@ -83,7 +91,7 @@ int main(int argc, char* argv[])
 			
 			count += k;
 		}
-		dstfs.write(arr->data, arr->size);
+		WriteBytes(arr->data, arr->size, next);
 
 		delete arr;
 		srcfs.close();

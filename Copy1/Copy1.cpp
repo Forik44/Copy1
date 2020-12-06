@@ -42,11 +42,25 @@ void AddBytes(BytesArray* array, char* bytes, int l)
 	}
 	
 }
-void WriteBytes(char* data, int size, char* next)
+char getElement(BytesArray* array, size_t index)
+{
+	if (array == nullptr || array->size < index)
+	{
+		exit(1);
+	}
+	else
+			return array->data[index];
+	
+}
+void WriteBytes(BytesArray* array, char* next)
 {
 	fstream dstfs;
 	dstfs.open(next, ios_base::app | ios_base::binary);
-	dstfs.write(data, size);
+	for (size_t i = 0; i < array->size; i++)
+	{
+		dstfs.put(getElement(array, i));
+	}
+	
 }
 
 int main(int argc, char* argv[])
@@ -91,7 +105,7 @@ int main(int argc, char* argv[])
 			
 			count += k;
 		}
-		WriteBytes(arr->data, arr->size, next);
+		WriteBytes(arr, next);
 
 		delete arr;
 		srcfs.close();
